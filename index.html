@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BSH 講員接待 checklist</title>
+<style>
+  :root{
+    --bg:#f7f6f2; --card:#ffffff; --line:#e3e1d8; --line2:#c9c7bd;
+    --text:#2c2c2a; --muted:#6b6a64; --hint:#9a9890;
+    --info-bg:#e6f1fb; --info:#0c447c; --info-line:#85b7eb;
+    --warn-bg:#faeeda; --warn:#854f0b;
+    --danger-bg:#fcebeb; --danger:#a32d2d;
+    --ok:#3b6d11; --ok-line:#97c459;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1f1e1c; --card:#2a2926; --line:#3a3935; --line2:#4a4944;
+      --text:#e8e6dd; --muted:#a8a69c; --hint:#7a7870;
+      --info-bg:#0c447c33; --info:#85b7eb; --info-line:#185fa5;
+      --warn-bg:#854f0b33; --warn:#fac775;
+      --danger-bg:#a32d2d33; --danger:#f09595;
+      --ok:#97c459; --ok-line:#3b6d11;
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
+    font-size:16px;line-height:1.5;padding:0 0 40px;}
+  .wrap{max-width:760px;margin:0 auto;padding:12px;}
+  header{position:sticky;top:0;z-index:20;background:var(--bg);
+    padding:10px 12px 8px;border-bottom:0.5px solid var(--line);}
+  .titlebar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+  .titlebar h1{font-size:17px;font-weight:600;margin:0;}
+  .status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--hint);}
+  .tabs{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;}
+  .tabs button{flex:0 0 auto;font-size:13px;padding:8px 12px;border-radius:10px;
+    border:0.5px solid var(--line2);background:var(--card);color:var(--text);
+    white-space:nowrap;cursor:pointer;}
+  .tabs button.active{background:var(--info-bg);color:var(--info);border-color:var(--info-line);font-weight:600;}
+  details{margin:12px 0;border:0.5px solid var(--line);border-radius:12px;
+    background:var(--card);padding:10px 14px;}
+  summary{cursor:pointer;font-size:15px;font-weight:600;list-style:none;}
+  summary::-webkit-details-marker{display:none;}
+  summary .c{color:var(--muted);font-weight:400;font-size:13px;}
+  .grp-title{font-size:13px;font-weight:600;margin:12px 0 6px;}
+  .grp-title.b1{color:var(--info);}
+  .grp-title.f1{color:var(--muted);}
+  .ci-row{background:var(--card);border:0.5px solid var(--line);border-radius:10px;
+    padding:10px 12px;margin-bottom:6px;}
+  .ci-name{font-size:14px;}
+  .ci-meta{font-size:12px;color:var(--hint);margin-top:2px;}
+  .ci-meta .car{color:var(--info);}
+  .days{display:flex;gap:6px;margin-top:8px;}
+  .daybox{flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
+    font-size:13px;padding:9px 4px;border-radius:9px;border:0.5px solid var(--line2);
+    background:var(--bg);cursor:pointer;user-select:none;min-height:42px;}
+  .daybox.on{background:var(--info-bg);color:var(--info);border-color:var(--info-line);font-weight:600;}
+  .daybox.empty{visibility:hidden;}
+  .daybox input{width:17px;height:17px;margin:0;}
+  .gift-grid{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px;}
+  @media(min-width:520px){.gift-grid{grid-template-columns:1fr 1fr;}}
+  .gift-row{display:flex;align-items:center;gap:10px;background:var(--card);
+    border:0.5px solid var(--line);border-radius:10px;padding:11px 12px;cursor:pointer;min-height:44px;}
+  .gift-row input{width:18px;height:18px;margin:0;flex:0 0 auto;}
+  .gift-row .note{color:var(--hint);font-size:12px;}
+  .summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;}
+  @media(min-width:520px){.summary{grid-template-columns:repeat(4,1fr);}}
+  .stat{background:var(--card);border:0.5px solid var(--line);border-radius:10px;padding:10px 12px;}
+  .stat .l{font-size:12px;color:var(--muted);}
+  .stat .v{font-size:22px;font-weight:600;margin-top:2px;}
+  .theme{font-size:15px;font-weight:600;margin:10px 0;}
+  .slot{border:0.5px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:8px;background:var(--card);}
+  .slot.inactive{background:var(--bg);opacity:.75;}
+  .slot.done{border-color:var(--ok-line);}
+  .slot .t{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .slot .ti{font-size:14px;margin-top:3px;}
+  .slot .ti b{font-weight:600;}
+  .iv{display:inline-block;margin-top:6px;background:var(--danger-bg);color:var(--danger);
+    font-size:12px;padding:4px 10px;border-radius:8px;}
+  .ctrls{display:flex;gap:8px;margin-top:10px;}
+  .ctrls label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;
+    font-size:14px;padding:10px;border-radius:9px;border:0.5px solid var(--line2);
+    background:var(--bg);cursor:pointer;user-select:none;min-height:44px;}
+  .ctrls label.on{background:var(--info-bg);color:var(--info);border-color:var(--info-line);font-weight:600;}
+  .ctrls input{width:18px;height:18px;margin:0;}
+  .reset{font-size:12px;padding:7px 12px;border-radius:9px;border:0.5px solid var(--line2);
+    background:var(--card);color:var(--muted);cursor:pointer;}
+  .setup{background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:16px;margin:12px 0;font-size:14px;line-height:1.6;}
+  .setup code{background:#0002;padding:1px 5px;border-radius:4px;font-size:13px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding:0;">
+    <div class="titlebar">
+      <h1>BSH 講員接待 checklist</h1>
+      <div class="status"><span class="dot" id="dot"></span><span id="sync">連線中…</span></div>
+    </div>
+    <div class="tabs" id="tabs"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div id="setupWarn" class="setup" style="display:none;">
+    ⚠️ 還沒填入 Supabase 設定。請打開這個檔案，找到最上面的
+    <code>SUPABASE_URL</code> 和 <code>SUPABASE_KEY</code>，把你的兩個值貼進去後重新整理。
+  </div>
+
+  <details open>
+    <summary>講員報到清單（全程參與，每天報到）<span class="c" id="ciCount"></span></summary>
+    <div id="checkin"></div>
+  </details>
+
+  <details>
+    <summary>講員禮物清單<span class="c" id="giftCount"></span></summary>
+    <div class="gift-grid" id="gifts"></div>
+  </details>
+
+  <div class="summary" id="summary"></div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
+    <button class="reset" id="reset">重設本場上下台</button>
+  </div>
+  <div id="board"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "貼上你的_PROJECT_URL";
+const SUPABASE_KEY = "貼上你的_ANON_PUBLIC_KEY";
+
+const DAYS=["6/18","6/19","6/20"];
+const FLOOR1=[
+  {name:"周神助牧師"},{name:"杜明達牧師"},{name:"楊寧亞牧師"},{name:"黃齊蕙牧師"},
+  {name:"Julia 蘇琦章牧師"},{name:"簡孟軒弟兄",note:"團隊8位"},{name:"姚建德牧師"},
+  {name:"林呈旭牧師"},{name:"蘇慎貞牧師"},{name:"許德輝牧師"},{name:"陳守愚傳道"},
+  {name:"于金堂牧師 ＆ 玢光師母"},{name:"鄒文博傳道 ＆ 胡筱薇師母"},{name:"林詩舜老師 ＆ 賴秋富師母"}
+];
+const B1=[
+  {name:"董家驊牧師",car:"AHB-0716",days:[0]},
+  {name:"謝至翔牧師",car:"AXW-2776",days:[0,1]},
+  {name:"章啟明章老",car:"RDC-8263"},
+  {name:"黃炯榕牧師",car:"ANS-0209 (高頂車)"},
+  {name:"高德積牧師",car:"3013VZ (箱型車)"},
+  {name:"黃國倫牧師 ＆ 許力今師母",car:"AWY9936 (高頂車)"}
+];
+const CHECKIN=[...FLOOR1.map(p=>({...p,spot:"1樓"})),...B1.map(p=>({...p,spot:"B1"}))];
+const GIFTS=[
+  {name:"周神助牧師"},{name:"董家驊牧師",note:"6/18離開"},{name:"杜明達牧師"},
+  {name:"楊寧亞牧師"},{name:"黃齊蕙牧師"},{name:"黃國倫牧師"},{name:"許力今師母"},
+  {name:"黃炯榕牧師"},{name:"鄒文博傳道"},{name:"胡筱薇師母"},{name:"高德積牧師"},
+  {name:"Julia 蘇琦章牧師"},{name:"林詩舜老師"},{name:"賴秋富師母"},{name:"簡孟軒弟兄"},
+  {name:"姚建德牧師"},{name:"于金堂牧師"},{name:"林呈旭牧師"},{name:"謝至翔牧師",note:"6/19離開"},
+  {name:"蘇慎貞牧師"},{name:"章啟明章老"},{name:"典躍舞團",note:"7份"},{name:"甚好團隊",note:"1份"}
+];
+const DATA={
+  s1:{label:"6/18 (四) 晚上",theme:"福音的異象",rows:[
+    {t:"19:00–19:05",title:"開場舞蹈",who:"典躍舞團",stage:true},
+    {t:"19:05–19:20",title:"詩歌敬拜",who:"台北真理堂敬拜團",stage:true},
+    {t:"19:20–19:30",title:"大會主席歡迎",who:"林呈旭",stage:true},
+    {t:"19:30–19:35",title:"全球華人福音化台灣的角色 (影片)",who:"Vinnie",stage:false},
+    {t:"19:35–20:05",title:"合一的突破",who:"董家驊",stage:true,interview:"20:05–20:20 受訪"},
+    {t:"20:05–20:15",title:"世界局勢與台灣的角色",who:"章啟明",stage:true},
+    {t:"20:15–20:45",title:"大會異象與目標",who:"楊寧亞",stage:true},
+    {t:"20:45–20:55",title:"AI實作 (影片)",who:"許德輝",stage:false},
+    {t:"20:55–21:00",title:"大會報告",who:"總幹事",stage:false}
+  ]},
+  s2:{label:"6/19 (五) 上午",theme:"福音的工人、福音的團隊",rows:[
+    {t:"09:00–09:15",title:"詩歌敬拜",who:"啟元老師敬拜團",stage:true},
+    {t:"09:15–09:45",title:"福音好在哪？",who:"姚建德",stage:true},
+    {t:"09:45–10:05",title:"見證：有福音，就有啟發",who:"謝至翔",stage:true},
+    {t:"10:05–10:15",title:"見證：福音工人的事奉見證",who:"高德積",stage:true},
+    {t:"10:15–10:30",title:"休息",who:"",stage:false},
+    {t:"10:30–10:45",title:"福音團隊的突破",who:"楊寧亞",stage:true},
+    {t:"10:45–11:35",title:"座談：如何面對與處理衝突",who:"楊寧亞",stage:true},
+    {t:"11:35",title:"與談人",who:"林呈旭、許德輝、蘇慎貞",stage:true},
+    {t:"11:35–11:55",title:"回應與禱告",who:"許德輝",stage:true,interview:"楊寧亞 11:35–11:50 受訪"},
+    {t:"11:55–12:00",title:"大會報告",who:"總幹事",stage:false}
+  ]},
+  s3:{label:"6/19 (五) 下午",theme:"福音的家庭、福音的工具",rows:[
+    {t:"13:30–13:45",title:"敬拜 (試音12:00–13:15)",who:"KUA敬拜團",stage:true},
+    {t:"13:45–13:50",title:"開場引言",who:"林呈旭",stage:true},
+    {t:"13:50–14:20",title:"福音與家庭－耶穌住我家",who:"黃國倫牧師",stage:true},
+    {t:"14:20–15:00",title:"座談主持～牧者家庭大揭密",who:"林呈旭",stage:true},
+    {t:"15:00",title:"與談人",who:"黃國倫牧師師母",stage:true,interview:"黃國倫、許力今 15:00–15:15 受訪"},
+    {t:"15:00–15:10",title:"小組討論",who:"許德輝",stage:true},
+    {t:"15:10–15:25",title:"收奉獻",who:"林呈旭",stage:true},
+    {t:"15:25–15:40",title:"休息",who:"",stage:false},
+    {t:"15:40–15:45",title:"Hands Up時間",who:"典躍舞團",stage:true},
+    {t:"15:45–15:50",title:"開場引言 (2A～Alpha & AI)",who:"林呈旭",stage:true},
+    {t:"15:50–16:10",title:"福音與AI應用",who:"文博、筱薇",stage:true},
+    {t:"16:10–16:25",title:"教會機構如何實際使用AI工具",who:"牧訓團隊 (呈旭、德輝、守愚)",stage:true},
+    {t:"16:25–16:30",title:"回應 (職場上如何使用AI)",who:"林詩舜",stage:true},
+    {t:"16:30–17:00",title:"2A～AI與福音工人",who:"楊寧亞牧師",stage:true},
+    {t:"17:00–17:05",title:"大會報告",who:"總幹事",stage:false}
+  ]},
+  s4:{label:"6/19 (五) 晚上",theme:"福音的領袖（領袖峰會）",rows:[
+    {t:"詩歌敬拜",title:"詩歌敬拜",who:"啟元老師敬拜團",stage:true},
+    {t:"18:00–18:05",title:"座談主持：如何建立聖潔婚姻團隊文化",who:"楊寧亞",stage:true},
+    {t:"18:05–18:15",title:"見證：外遇風暴",who:"文博、筱薇",stage:true},
+    {t:"18:15–19:00",title:"與談人 (領袖如何過聖潔生活)",who:"黃烱榕、于金堂",stage:true},
+    {t:"19:00–20:00",title:"晚餐",who:"",stage:false},
+    {t:"20:00–20:20",title:"主題見證1：福音工人",who:"許德輝",stage:true},
+    {t:"20:20–20:40",title:"主題見證2：福音佈道 (待確認)",who:"陳守愚",stage:true},
+    {t:"20:40–20:55",title:"收奉獻",who:"楊寧亞",stage:true}
+  ]},
+  s5:{label:"6/20 (六) 上午",theme:"福音的宣教",rows:[
+    {t:"09:00–09:05",title:"舞蹈敬拜",who:"典躍舞團",stage:true},
+    {t:"09:05–09:20",title:"詩歌敬拜",who:"台北真理堂敬拜團",stage:true},
+    {t:"09:20–09:50",title:"宣教的信念",who:"杜明達",stage:true,interview:"09:50–10:05 受訪"},
+    {t:"09:50–10:20",title:"未來宣教的可能性與挑戰性",who:"黃齊蕙",stage:true,interview:"10:20–10:35 受訪"},
+    {t:"10:20–10:35",title:"回應～營商宣教",who:"Julia",stage:true},
+    {t:"10:35–10:45",title:"回應～青年宣教",who:"簡孟軒",stage:true},
+    {t:"10:45–11:05",title:"合一的突破 (推動2027嚴肅會)",who:"周神助",stage:true,interview:"11:05–11:20 受訪"},
+    {t:"11:05–11:25",title:"回應",who:"楊寧亞",stage:true},
+    {t:"11:25–11:40",title:"小組交流",who:"許德輝",stage:true},
+    {t:"11:40–12:00",title:"禱告＆收奉獻",who:"林呈旭",stage:true},
+    {t:"12:00–12:10",title:"大會報告",who:"陳守愚",stage:true}
+  ]}
+};
+
+let current="s1";
+let local={};
+let sb=null, connected=false;
+
+function key(parts){return parts.join("|");}
+function activeDays(p){return p.days?p.days:[0,1,2];}
+
+function setSync(ok,txt){
+  connected=ok;
+  document.getElementById("dot").style.background=ok?"var(--ok)":"var(--hint)";
+  document.getElementById("sync").textContent=txt||(ok?"團隊即時同步":"離線（本機）");
+}
+
+async function setVal(id,val){
+  local[id]=val;
+  if(sb&&connected){
+    try{ await sb.from("bsh_state").upsert({id:id,value:val}); }
+    catch(e){ saveLocal(); }
+  }else{ saveLocal(); }
+  render();
+}
+function getVal(id){return !!local[id];}
+function saveLocal(){try{localStorage.setItem("bsh-local",JSON.stringify(local));}catch(e){}}
+function loadLocal(){try{const r=localStorage.getItem("bsh-local");if(r)local=JSON.parse(r);}catch(e){}}
+
+async function initSupabase(){
+  if(SUPABASE_URL.startsWith("貼上")||SUPABASE_KEY.startsWith("貼上")){
+    document.getElementById("setupWarn").style.display="block";
+    loadLocal(); setSync(false,"尚未設定（本機）"); render(); return;
+  }
+  try{
+    sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const {data,error}=await sb.from("bsh_state").select("id,value");
+    if(error)throw error;
+    local={}; (data||[]).forEach(r=>local[r.id]=r.value);
+    setSync(true);
+    sb.channel("bsh").on("postgres_changes",
+      {event:"*",schema:"public",table:"bsh_state"},
+      payload=>{const r=payload.new;if(r&&r.id!==undefined){local[r.id]=r.value;render();}}
+    ).subscribe();
+    render();
+  }catch(e){
+    loadLocal(); setSync(false,"連線失敗（本機）"); render();
+  }
+}
+
+function tabs(){
+  const c=document.getElementById("tabs");c.innerHTML="";
+  for(const sid in DATA){const b=document.createElement("button");
+    b.textContent=DATA[sid].label;if(sid===current)b.className="active";
+    b.onclick=()=>{current=sid;render();window.scrollTo(0,0);};c.appendChild(b);}
+}
+
+function ciRow(p,idx){
+  const ad=activeDays(p);
+  let boxes="";
+  DAYS.forEach((d,di)=>{
+    if(ad.includes(di)){
+      const id=key(["ci",idx,di]);const on=getVal(id);
+      boxes+=`<label class="daybox ${on?'on':''}"><input type="checkbox" data-id="${id}" ${on?'checked':''}>${d}</label>`;
+    }else{boxes+=`<span class="daybox empty"></span>`;}
+  });
+  const meta=p.car?`<div class="ci-meta"><span class="car">🚗 ${p.car}</span></div>`:(p.note?`<div class="ci-meta">${p.note}</div>`:"");
+  return `<div class="ci-row"><div class="ci-name">${p.name}</div>${meta}<div class="days">${boxes}</div></div>`;
+}
+function checkin(){
+  const wrap=document.getElementById("checkin");
+  let done=0,tot=0;
+  CHECKIN.forEach((p,i)=>{activeDays(p).forEach(di=>{tot++;if(getVal(key(["ci",i,di])))done++;});});
+  document.getElementById("ciCount").textContent=` ｜ ${done}/${tot} 報到`;
+  let html=`<div class="grp-title f1">🚶 1樓接待</div>`;
+  CHECKIN.forEach((p,i)=>{if(p.spot==="1樓")html+=ciRow(p,i);});
+  html+=`<div class="grp-title b1">🚗 B1停車場接待（開車）</div>`;
+  CHECKIN.forEach((p,i)=>{if(p.spot==="B1")html+=ciRow(p,i);});
+  wrap.innerHTML=html;
+  wrap.querySelectorAll("input").forEach(cb=>cb.onchange=()=>setVal(cb.dataset.id,cb.checked));
+}
+function gifts(){
+  const wrap=document.getElementById("gifts");
+  let done=0;GIFTS.forEach((g,i)=>{if(getVal(key(["gift",i])))done++;});
+  document.getElementById("giftCount").textContent=` ｜ ${done}/${GIFTS.length} 已給（許德輝、陳守愚不備）`;
+  wrap.innerHTML=GIFTS.map((g,i)=>{
+    const id=key(["gift",i]);const on=getVal(id);
+    return `<label class="gift-row"><input type="checkbox" data-id="${id}" ${on?'checked':''}><span>${g.name}${g.note?` <span class="note">${g.note}</span>`:""}</span></label>`;
+  }).join("");
+  wrap.querySelectorAll("input").forEach(cb=>cb.onchange=()=>setVal(cb.dataset.id,cb.checked));
+}
+function board(){
+  const s=DATA[current];
+  const stageRows=s.rows.filter(r=>r.stage).length;
+  let up=0,down=0,iv=0;
+  s.rows.forEach((r,i)=>{if(r.stage){if(getVal(key([current,i,"up"])))up++;if(getVal(key([current,i,"down"])))down++;}if(r.interview)iv++;});
+  document.getElementById("summary").innerHTML=`
+    <div class="stat"><div class="l">本場上台</div><div class="v">${stageRows}</div></div>
+    <div class="stat"><div class="l">已上台</div><div class="v">${up}/${stageRows}</div></div>
+    <div class="stat"><div class="l">已下台</div><div class="v">${down}/${stageRows}</div></div>
+    <div class="stat"><div class="l">受訪時段</div><div class="v">${iv}</div></div>`;
+  const b=document.getElementById("board");
+  let html=`<div class="theme">${s.theme}</div>`;
+  s.rows.forEach((r,i)=>{
+    const upId=key([current,i,"up"]),downId=key([current,i,"down"]);
+    const upOn=getVal(upId),downOn=getVal(downId);
+    let ctrls="";
+    if(r.stage){
+      ctrls=`<div class="ctrls">
+        <label class="${upOn?'on':''}"><input type="checkbox" data-id="${upId}" ${upOn?'checked':''}>上台</label>
+        <label class="${downOn?'on':''}"><input type="checkbox" data-id="${downId}" ${downOn?'checked':''}>下台</label></div>`;
+    }
+    const ivTag=r.interview?`<div class="iv">🎤 ${r.interview} · 2F講員休息室</div>`:"";
+    const who=r.who?`<b>${r.who}</b>`:"—";
+    html+=`<div class="slot ${r.stage?'':'inactive'} ${(r.stage&&downOn)?'done':''}">
+      <div class="t">${r.t}</div>
+      <div class="ti">${r.title}　${who}</div>${ivTag}${ctrls}</div>`;
+  });
+  b.innerHTML=html;
+  b.querySelectorAll("input").forEach(cb=>cb.onchange=()=>setVal(cb.dataset.id,cb.checked));
+}
+function render(){tabs();checkin();gifts();board();}
+
+document.getElementById("reset").onclick=async()=>{
+  if(!confirm("確定要清除本場所有上台/下台勾選？"))return;
+  const s=DATA[current];
+  for(let i=0;i<s.rows.length;i++){
+    if(s.rows[i].stage){await setVal(key([current,i,"up"]),false);await setVal(key([current,i,"down"]),false);}
+  }
+};
+initSupabase();
+</script>
+</body>
+</html>
