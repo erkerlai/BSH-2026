@@ -126,16 +126,18 @@ const DAYS=["6/18","6/19","6/20"];
 const FLOOR1=[
   {name:"周神助牧師"},{name:"杜明達牧師"},{name:"楊寧亞牧師"},{name:"黃齊蕙牧師"},
   {name:"Julia 蘇琦章牧師"},{name:"簡孟軒弟兄",note:"團隊8位"},{name:"姚建德牧師"},
-  {name:"林呈旭牧師"},{name:"蘇慎貞牧師"},{name:"許德輝牧師"},{name:"陳守愚傳道"},
-  {name:"于金堂牧師 ＆ 玢光師母"},{name:"鄒文博傳道 ＆ 胡筱薇師母"},{name:"林詩舜老師 ＆ 賴秋富師母"}
+  {name:"林呈旭牧師"},{name:"劉惠君牧師"},{name:"許德輝牧師"},{name:"陳守愚傳道"},
+  {name:"于金堂牧師 ＆ 玢光師母"},{name:"鄒文博傳道 ＆ 胡筱薇師母"},{name:"林詩舜老師 ＆ 賴秋富師母"},
+  {name:"許力今師母",days:[0]}
 ];
 const B1=[
   {name:"董家驊牧師",car:"AHB-0716",days:[0]},
-  {name:"謝至翔牧師",car:"AXW-2776",days:[0,1]},
-  {name:"章啟明章老",car:"RDC-8263"},
+  {name:"謝至翔牧師",car:"AXW-2776",days:[1]},
+  {name:"章啟明章老",car:"RDC-8263",days:[0,1]},
   {name:"黃炯榕牧師",car:"ANS-0209 (高頂車)"},
   {name:"高德積牧師",car:"3013VZ (箱型車)"},
-  {name:"黃國倫牧師 ＆ 許力今師母",car:"AWY9936 (高頂車)"}
+  {name:"蘇慎貞牧師",car:"APK2135"},
+  {name:"黃國倫牧師 ＆ 許力今師母",car:"AWY9936 (高頂車)",days:[1,2]}
 ];
 const CHECKIN=[...FLOOR1.map(p=>({...p,spot:"1樓"})),...B1.map(p=>({...p,spot:"B1"}))];
 const GIFTS=[
@@ -183,19 +185,20 @@ const DATA={
     {t:"15:45–15:50",title:"開場引言 (2A～Alpha & AI)",who:"林呈旭",stage:true},
     {t:"15:50–16:10",title:"福音與AI應用",who:"文博、筱薇",stage:true},
     {t:"16:10–16:25",title:"教會機構如何實際使用AI工具",who:"牧訓團隊 (呈旭、德輝、守愚)",stage:true},
-    {t:"16:25–16:30",title:"回應 (職場上如何使用AI)",who:"林詩舜",stage:true},
-    {t:"16:30–17:00",title:"2A～AI與福音工人",who:"楊寧亞牧師",stage:true},
-    {t:"17:00–17:05",title:"大會報告",who:"總幹事",stage:false}
+    {t:"16:25–16:30",title:"回應 (職場上如何使用AI：慈愛與誠實)",who:"林詩舜",stage:true},
+    {t:"16:30–17:00",title:"2A～AI與福音工人 (含文博筱薇、詩舜秋富)",who:"楊寧亞牧師",stage:true},
+    {t:"17:00–17:05",title:"大會報告",who:"總幹事",stage:false},
+    {t:"散會後",title:"🚐 派兩車送講員往「水源會館」",who:"車1：楊寧亞／烱榕牧師＆靖華師母　·　車2：于哥＆玢光師母／文博傳道＆筱薇師母",stage:false,shuttle:true}
   ]},
   s4:{label:"6/19 (五) 晚上",theme:"福音的領袖（領袖峰會）",rows:[
     {t:"詩歌敬拜",title:"詩歌敬拜",who:"啟元老師敬拜團",stage:true},
     {t:"18:00–18:05",title:"座談主持：如何建立聖潔婚姻團隊文化",who:"楊寧亞",stage:true},
     {t:"18:05–18:15",title:"見證：外遇風暴",who:"文博、筱薇",stage:true},
-    {t:"18:15–19:00",title:"與談人 (領袖如何過聖潔生活)",who:"黃烱榕、于金堂",stage:true},
+    {t:"18:15–19:00",title:"與談人 (1.領袖如何過聖潔生活 2.如何幫助別人過聖潔生活)",who:"黃烱榕、于金堂",stage:true},
     {t:"19:00–20:00",title:"晚餐",who:"",stage:false},
     {t:"20:00–20:20",title:"主題見證1：福音工人",who:"許德輝",stage:true},
     {t:"20:20–20:40",title:"主題見證2：福音佈道 (待確認)",who:"陳守愚",stage:true},
-    {t:"20:40–20:55",title:"收奉獻",who:"楊寧亞",stage:true}
+    {t:"20:40–20:55",title:"收奉獻 (為有需要的傳道人、為大會的需要)",who:"楊寧亞",stage:true}
   ]},
   s5:{label:"6/20 (六) 上午",theme:"福音的宣教",rows:[
     {t:"09:00–09:05",title:"舞蹈敬拜",who:"典躍舞團",stage:true},
